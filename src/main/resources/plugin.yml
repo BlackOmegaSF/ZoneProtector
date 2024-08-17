@@ -1,0 +1,4 @@
+name: ZoneProtector
+version: '1.0-SNAPSHOT'
+main: com.kleinercode.plugins.zoneprotector.ZoneProtector
+api-version: '1.21'
