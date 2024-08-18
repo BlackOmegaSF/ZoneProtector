@@ -21,7 +21,6 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import static com.kleinercode.plugins.zoneprotector.CoordinateUtils.parseIntCoordinate;
-import static java.lang.Integer.parseInt;
 
 public final class ZoneProtector extends JavaPlugin implements Listener {
 
