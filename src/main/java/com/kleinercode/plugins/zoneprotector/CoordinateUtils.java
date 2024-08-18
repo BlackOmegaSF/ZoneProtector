@@ -21,7 +21,7 @@ public class CoordinateUtils {
 
             String modifierString = coordinate.replace("~", "");
             if (modifierString.isBlank()) return playerCoordinate;
-            int modifier = Integer.parseInt(coordinate);
+            int modifier = Integer.parseInt(modifierString);
 
             return playerCoordinate + modifier;
 
