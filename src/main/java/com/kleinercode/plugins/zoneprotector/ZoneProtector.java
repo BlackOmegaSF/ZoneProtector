@@ -2,10 +2,7 @@ package com.kleinercode.plugins.zoneprotector;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -18,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 import java.util.*;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import static com.kleinercode.plugins.zoneprotector.CoordinateUtils.parseIntCoordinate;
@@ -82,17 +80,28 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
     );
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onEnable() {
         // Plugin startup logic
         getServer().getPluginManager().registerEvents(this, this);
         ConfigurationSerialization.registerClass(Zone.class);
         saveDefaultConfig(); // Saves default config if none exists. Will not overwrite existing
         // Get and load config
-        List<Zone> loadedZones = (List<Zone>) getConfig().getList("zones");
-        if (loadedZones != null) {
-            zones.addAll(loadedZones);
+        List<Zone> loadedZones;
+        try {
+            loadedZones = (List<Zone>) getConfig().getList("zones");
+            if (loadedZones != null) {
+                zones.addAll(loadedZones);
+            }
+        } catch (ClassCastException e) {
+            getLogger().log(Level.CONFIG, "Error loading zones from configuration!");
         }
 
+        PluginCommand zone = getCommand("zone");
+        if (zone != null) {
+            zone.setExecutor(new CommandZone());
+            zone.setTabCompleter(new CommandZoneTabCompleter());
+        }
 
     }
 
@@ -258,7 +267,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
 
     }
 
-    public class CommandZoneTabCompleter implements TabCompleter {
+    public static class CommandZoneTabCompleter implements TabCompleter {
 
         @Override
         public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
