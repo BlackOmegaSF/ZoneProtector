@@ -89,8 +89,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
         saveDefaultConfig(); // Saves default config if none exists. Will not overwrite existing
         // Get and load config
         List<Zone> loadedZones = (List<Zone>) getConfig().getList("zones");
-        if (zones != null) {
-            assert loadedZones != null;
+        if (loadedZones != null) {
             zones.addAll(loadedZones);
         }
 
