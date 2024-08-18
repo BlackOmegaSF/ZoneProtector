@@ -5,22 +5,28 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
+import java.util.regex.Pattern;
 
 import static java.lang.Integer.parseInt;
 
 public final class ZoneProtector extends JavaPlugin implements Listener {
+
+    private static final String _PROTECT = "protect";
+    private static final String _UNPROTECT = "unprotect";
+    private static final String _LIST = "list";
 
     private final List<Zone> zones = new ArrayList<>();
     private final List<EntityType> bannedTypes = List.of(
@@ -137,9 +143,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
 
     public class CommandZone implements CommandExecutor {
 
-        private static final String _PROTECT = "protect";
-        private static final String _UNPROTECT = "unprotect";
-        private static final String _LIST = "list";
+
 
         @Override
         public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -232,7 +236,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                 case _UNPROTECT -> {
                     World.Environment targetEnv;
                     try {
-                        targetEnv = World.Environment.valueOf(args[1]);
+                        targetEnv = World.Environment.valueOf(args[1].trim().toUpperCase());
                     } catch (Exception e) {
                         sender.sendMessage("Invalid dimension provided!");
                         return true;
@@ -290,6 +294,104 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                 }
 
             }
+        }
+    }
+
+    public class CommandZoneTabCompleter implements TabCompleter {
+
+        @Override
+        public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+            List<String> tabCompleteValues = new ArrayList<>();
+            int position = args.length - 1;
+            switch(position) {
+                case 0 -> {
+                    // Command type (list, protect, or unprotect)
+                    if (args[position].isEmpty()) {
+                        tabCompleteValues.add(_LIST);
+                        tabCompleteValues.add(_PROTECT);
+                        tabCompleteValues.add(_UNPROTECT);
+                    } else {
+                        Pattern pattern = Pattern.compile(args[0].toLowerCase());
+                        if (pattern.matcher(_LIST).lookingAt()) {
+                            tabCompleteValues.add(_LIST);
+                        }
+                        if (pattern.matcher(_PROTECT).lookingAt()) {
+                            tabCompleteValues.add(_PROTECT);
+                        }
+                        if (pattern.matcher(_UNPROTECT).lookingAt()) {
+                            tabCompleteValues.add(_UNPROTECT);
+                        }
+                    }
+                }
+
+                case 1 -> {
+                    // Dimension
+                    if (args[position].isEmpty()) {
+                        for (World.Environment environment : World.Environment.values()) {
+                            tabCompleteValues.add(environment.name());
+                        }
+                    } else {
+                        Pattern pattern = Pattern.compile(args[position].toUpperCase());
+                        for (World.Environment environment : World.Environment.values()) {
+                            if (pattern.matcher(environment.name()).lookingAt()) {
+                                tabCompleteValues.add(environment.name());
+                            }
+                        }
+                    }
+                }
+
+                case 2, 5 -> {
+                    // X coordinate
+                    if (sender instanceof Player) {
+                        String xCoord = String.valueOf(((Player) sender).getLocation().getBlockX());
+                        if (args[position].isEmpty()) {
+                            tabCompleteValues.add(xCoord);
+                        } else {
+                            Pattern pattern = Pattern.compile(args[position]);
+                            if (pattern.matcher(xCoord).lookingAt()) {
+                                tabCompleteValues.add(xCoord);
+                            }
+                        }
+                    }
+                }
+
+                case 3, 6 -> {
+                    // Y coordinate
+                    if (sender instanceof Player) {
+                        String yCoord = String.valueOf(((Player) sender).getLocation().getBlockY());
+                        if (args[position].isEmpty()) {
+                            tabCompleteValues.add(yCoord);
+                        } else {
+                            Pattern pattern = Pattern.compile(args[position]);
+                            if (pattern.matcher(yCoord).lookingAt()) {
+                                tabCompleteValues.add(yCoord);
+                            }
+                        }
+                    }
+                }
+
+                case 4, 7 -> {
+                    // Z coordinate
+                    if (sender instanceof Player) {
+                        String zCoord = String.valueOf(((Player) sender).getLocation().getBlockZ());
+                        if (args[position].isEmpty()) {
+                            tabCompleteValues.add(zCoord);
+                        } else {
+                            Pattern pattern = Pattern.compile(args[position]);
+                            if (pattern.matcher(zCoord).lookingAt()) {
+                                tabCompleteValues.add(zCoord);
+                            }
+                        }
+                    }
+                }
+
+                default -> {
+                    if (position > 7) {
+                        tabCompleteValues.add("Too many arguments!");
+                    }
+                }
+            }
+            return tabCompleteValues;
         }
     }
 }
