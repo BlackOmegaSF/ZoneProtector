@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import static com.kleinercode.plugins.zoneprotector.CoordinateUtils.parseIntCoordinate;
 import static java.lang.Integer.parseInt;
 
 public final class ZoneProtector extends JavaPlugin implements Listener {
@@ -175,7 +176,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                     return true;
                 }
 
-                case _PROTECT -> {
+                case _PROTECT, _UNPROTECT -> {
                     World.Environment newEnv;
                     try {
                         newEnv = World.Environment.valueOf(args[1]);
@@ -189,20 +190,21 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                     BlockCoordinate upperLocation;
                     try {
                         lowerLocation = new BlockCoordinate(
-                            parseInt(args[2]),
-                            parseInt(args[3]),
-                            parseInt(args[4])
+                                parseIntCoordinate(args[2], sender, Enums.CoordinateType.X),
+                                parseIntCoordinate(args[3], sender, Enums.CoordinateType.Y),
+                                parseIntCoordinate(args[4], sender, Enums.CoordinateType.Z)
                         );
 
                         upperLocation = new BlockCoordinate(
-                                parseInt(args[5]),
-                                parseInt(args[6]),
-                                parseInt(args[7])
+                                parseIntCoordinate(args[5], sender, Enums.CoordinateType.X),
+                                parseIntCoordinate(args[6], sender, Enums.CoordinateType.Y),
+                                parseIntCoordinate(args[7], sender, Enums.CoordinateType.Z)
                         );
                     } catch (NumberFormatException e) {
                         sender.sendMessage("Invalid integer coordinates!");
                         return true;
                     }
+
 
                     // Create the zone
                     Zone newZone;
@@ -217,7 +219,16 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                     try {
                         for (Zone zone : zones) {
                             if (zone.equals(newZone)) {
-                                throw new Exception("Zone already exists!");
+                                if (args[0].equalsIgnoreCase(_UNPROTECT)) {
+                                    // Remove it from the list
+                                    zones.remove(zone);
+                                    getConfig().set("zones", zones);
+                                    saveConfig();
+                                    sender.sendMessage("Stopped protecting zone:\n" + newZone.prettyPrint());
+                                    return true;
+                                } else {
+                                    throw new Exception("Zone already exists!");
+                                }
                             }
                         }
                     } catch (Exception e) {
@@ -225,66 +236,16 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                         return true;
                     }
 
-                    // Zone doesn't exist already, add it
-                    zones.add(newZone);
-                    getConfig().set("zones", zones);
-                    saveConfig();
-                    sender.sendMessage("Now protecting zone:\n" + newZone.prettyPrint());
-                    return true;
-                }
-
-                case _UNPROTECT -> {
-                    World.Environment targetEnv;
-                    try {
-                        targetEnv = World.Environment.valueOf(args[1].trim().toUpperCase());
-                    } catch (Exception e) {
-                        sender.sendMessage("Invalid dimension provided!");
-                        return true;
+                    if (args[0].equalsIgnoreCase(_PROTECT)) {
+                        // Zone doesn't exist already, add it
+                        zones.add(newZone);
+                        getConfig().set("zones", zones);
+                        saveConfig();
+                        sender.sendMessage("Now protecting zone:\n" + newZone.prettyPrint());
+                    } else {
+                        // If we reach here, the zone wasn't in the list
+                        sender.sendMessage("Zone not currently under protection.");
                     }
-
-                    // Parse coordinates
-                    BlockCoordinate lowerLocation;
-                    BlockCoordinate upperLocation;
-                    try {
-                        lowerLocation = new BlockCoordinate(
-                                parseInt(args[2]),
-                                parseInt(args[3]),
-                                parseInt(args[4])
-                        );
-
-                        upperLocation = new BlockCoordinate(
-                                parseInt(args[5]),
-                                parseInt(args[6]),
-                                parseInt(args[7])
-                        );
-                    } catch (NumberFormatException e) {
-                        sender.sendMessage("Invalid integer coordinates!");
-                        return true;
-                    }
-
-                    // Create the zone
-                    Zone targetZone;
-                    try {
-                        targetZone = new Zone(targetEnv, lowerLocation, upperLocation);
-                    } catch (IllegalArgumentException e) {
-                        sender.sendMessage(e.getMessage());
-                        return true;
-                    }
-
-                    // Check if zone already exists
-                    for (Zone zone : zones) {
-                        if (zone.equals(targetZone)) {
-                            // Remove it from the list
-                            zones.remove(zone);
-                            getConfig().set("zones", zones);
-                            saveConfig();
-                            sender.sendMessage("Stopped protecting zone:\n" + targetZone.prettyPrint());
-                            return true;
-                        }
-                    }
-
-                    // If we reach here, the zone wasn't in the list
-                    sender.sendMessage("Zone not currently under protection.");
                     return true;
                 }
 
