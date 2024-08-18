@@ -200,7 +200,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                                 parseInt(args[7])
                         );
                     } catch (NumberFormatException e) {
-                        sender.sendMessage("Invalid coordinates!");
+                        sender.sendMessage("Invalid integer coordinates!");
                         return true;
                     }
 
@@ -258,7 +258,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                                 parseInt(args[7])
                         );
                     } catch (NumberFormatException e) {
-                        sender.sendMessage("Invalid coordinates!");
+                        sender.sendMessage("Invalid integer coordinates!");
                         return true;
                     }
 
@@ -295,6 +295,8 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
 
             }
         }
+
+
     }
 
     public class CommandZoneTabCompleter implements TabCompleter {
