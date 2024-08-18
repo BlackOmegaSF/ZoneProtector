@@ -295,6 +295,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                 }
 
                 case 1 -> {
+                    if (args[1].equalsIgnoreCase(_LIST)) break;
                     // Dimension
                     if (args[position].isEmpty()) {
                         for (World.Environment environment : World.Environment.values()) {
@@ -311,6 +312,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                 }
 
                 case 2, 5 -> {
+                    if (args[1].equalsIgnoreCase(_LIST)) break;
                     // X coordinate
                     if (sender instanceof Player) {
                         String xCoord = String.valueOf(((Player) sender).getLocation().getBlockX());
@@ -326,6 +328,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                 }
 
                 case 3, 6 -> {
+                    if (args[1].equalsIgnoreCase(_LIST)) break;
                     // Y coordinate
                     if (sender instanceof Player) {
                         String yCoord = String.valueOf(((Player) sender).getLocation().getBlockY());
@@ -341,6 +344,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                 }
 
                 case 4, 7 -> {
+                    if (args[1].equalsIgnoreCase(_LIST)) break;
                     // Z coordinate
                     if (sender instanceof Player) {
                         String zCoord = String.valueOf(((Player) sender).getLocation().getBlockZ());
@@ -356,6 +360,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                 }
 
                 default -> {
+                    if (args[1].equalsIgnoreCase(_LIST)) break;
                     if (position > 7) {
                         tabCompleteValues.add("Too many arguments!");
                     }
