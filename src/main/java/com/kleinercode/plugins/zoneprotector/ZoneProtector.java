@@ -290,7 +290,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                 return tabCompleteValues;
             }
 
-            if (args[1].equalsIgnoreCase(_LIST)) return tabCompleteValues;
+            if (args[0].equalsIgnoreCase(_LIST)) return tabCompleteValues;
             switch(position) {
                 case 1 -> {
                     // Dimension
