@@ -97,7 +97,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
             getLogger().log(Level.CONFIG, "Error loading zones from configuration!");
         }
 
-        PluginCommand zone = getCommand("zone");
+        PluginCommand zone = this.getCommand("zone");
         if (zone != null) {
             zone.setExecutor(new CommandZone());
             zone.setTabCompleter(new CommandZoneTabCompleter());
@@ -150,8 +150,6 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
     }
 
     public class CommandZone implements CommandExecutor {
-
-
 
         @Override
         public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -263,8 +261,6 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
 
             }
         }
-
-
     }
 
     public static class CommandZoneTabCompleter implements TabCompleter {
