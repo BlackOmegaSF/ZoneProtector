@@ -232,7 +232,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                                     zones.remove(zone);
                                     getConfig().set("zones", zones);
                                     saveConfig();
-                                    sender.sendMessage("Stopped protecting zone:\n" + newZone.prettyPrint());
+                                    sender.sendMessage("Stopped protecting zone:\n" + newZone.prettyPrint(getServer()));
                                     return true;
                                 } else {
                                     throw new Exception("Zone already exists!");
@@ -249,7 +249,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                         zones.add(newZone);
                         getConfig().set("zones", zones);
                         saveConfig();
-                        sender.sendMessage("Now protecting zone:\n" + newZone.prettyPrint());
+                        sender.sendMessage("Now protecting zone:\n" + newZone.prettyPrint(getServer()));
                     } else {
                         // If we reach here, the zone wasn't in the list
                         sender.sendMessage("Zone not currently under protection.");

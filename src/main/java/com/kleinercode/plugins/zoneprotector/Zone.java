@@ -1,6 +1,8 @@
 package com.kleinercode.plugins.zoneprotector;
 
 import org.bukkit.Location;
+import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 
@@ -66,6 +68,18 @@ public class Zone implements ConfigurationSerializable {
 
     public String prettyPrint() {
         return worldId + " [" + lowerLocation.x + ", " + lowerLocation.y + ", " + lowerLocation.z +
+                "] to [" + upperLocation.x + ", " + upperLocation.y + ", " + upperLocation.z + "]";
+    }
+
+    public String prettyPrint(Server server) {
+        World world = server.getWorld(worldId);
+        String worldName;
+        if (world == null) {
+            worldName = "[UNKNOWN WORLD]";
+        } else {
+            worldName = world.getName() + ":" + world.getEnvironment();
+        }
+        return worldName + " [" + lowerLocation.x + ", " + lowerLocation.y + ", " + lowerLocation.z +
                 "] to [" + upperLocation.x + ", " + upperLocation.y + ", " + upperLocation.z + "]";
     }
 
