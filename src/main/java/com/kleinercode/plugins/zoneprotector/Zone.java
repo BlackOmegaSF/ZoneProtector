@@ -84,7 +84,7 @@ public class Zone implements ConfigurationSerializable {
     }
 
     public boolean equals(Zone zone) {
-        if (zone.worldId != worldId) return false;
+        if (!zone.worldId.equals(worldId)) return false;
         if (!(zone.lowerLocation.equals(lowerLocation))) return false;
         if (!(zone.upperLocation.equals(upperLocation))) return false;
         return true;
