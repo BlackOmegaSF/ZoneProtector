@@ -42,7 +42,7 @@ public class Zone implements ConfigurationSerializable {
     }
 
     public boolean checkIfWithin(Location location) {
-        if (location.getWorld().getUID() != worldId) {
+        if (!location.getWorld().getUID().equals(worldId)) {
             return false;
         }
 
