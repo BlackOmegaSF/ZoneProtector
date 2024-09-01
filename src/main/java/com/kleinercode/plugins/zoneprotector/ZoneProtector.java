@@ -1,14 +1,22 @@
 package com.kleinercode.plugins.zoneprotector;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Location;
 import org.bukkit.command.*;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SpawnEggMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -147,6 +155,31 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                 break;
             }
         }
+    }
+
+    @EventHandler
+    public void playerInteractEvent(PlayerInteractEvent event) {
+
+        // Only check right clicks on blocks
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+        // Only do anything when it's a spawn egg being used
+        ItemStack item = event.getItem();
+        if (item == null) return;
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+        if (meta instanceof SpawnEggMeta) {
+            if (bannedTypes.contains(((SpawnEggMeta) meta).getCustomSpawnedType())) {
+                Location interactionPoint = event.getInteractionPoint();
+                if (interactionPoint == null) return;
+                for (Zone zone : zones) {
+                    if (zone.checkIfWithin(event.getInteractionPoint())) {
+                        event.getPlayer().sendMessage(Component.text("This area is protected! You cannot spawn monsters here."));
+                    }
+                }
+            }
+        }
+
     }
 
     public class CommandZone implements CommandExecutor {
