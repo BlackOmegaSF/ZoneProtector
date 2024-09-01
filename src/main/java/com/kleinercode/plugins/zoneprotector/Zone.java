@@ -1,22 +1,22 @@
 package com.kleinercode.plugins.zoneprotector;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Zone implements ConfigurationSerializable {
 
-    World.Environment environment;
+    UUID worldId;
     BlockCoordinate lowerLocation;
     BlockCoordinate upperLocation;
 
     public Zone(Location lowerLocation, Location upperLocation) {
-        if (lowerLocation.getWorld().getEnvironment() != upperLocation.getWorld().getEnvironment()) {
-            throw new IllegalArgumentException("Locations must be in the same environment.");
+        if (lowerLocation.getWorld().getUID() != upperLocation.getWorld().getUID()) {
+            throw new IllegalArgumentException("Locations must be in the same world.");
         }
 
         if (
@@ -27,20 +27,20 @@ public class Zone implements ConfigurationSerializable {
             throw new IllegalArgumentException("Lower location coordinates must be lower than or equal to upper location coordinates.");
         }
 
-        this.environment = lowerLocation.getWorld().getEnvironment();
+        this.worldId = lowerLocation.getWorld().getUID();
         this.lowerLocation = BlockCoordinate.fromLocation(lowerLocation);
         this.upperLocation = BlockCoordinate.fromLocation(upperLocation);
 
     }
 
-    public Zone(World.Environment environment, BlockCoordinate lowerLocation, BlockCoordinate upperLocation) {
-        this.environment = environment;
+    public Zone(UUID worldId, BlockCoordinate lowerLocation, BlockCoordinate upperLocation) {
+        this.worldId = worldId;
         this.lowerLocation = lowerLocation;
         this.upperLocation = upperLocation;
     }
 
     public boolean checkIfWithin(Location location) {
-        if (location.getWorld().getEnvironment() != environment) {
+        if (location.getWorld().getUID() != worldId) {
             return false;
         }
 
@@ -65,12 +65,12 @@ public class Zone implements ConfigurationSerializable {
     }
 
     public String prettyPrint() {
-        return environment.toString() + " [" + lowerLocation.x + ", " + lowerLocation.y + ", " + lowerLocation.z +
+        return worldId + " [" + lowerLocation.x + ", " + lowerLocation.y + ", " + lowerLocation.z +
                 "] to [" + upperLocation.x + ", " + upperLocation.y + ", " + upperLocation.z + "]";
     }
 
     public boolean equals(Zone zone) {
-        if (zone.environment != environment) return false;
+        if (zone.worldId != worldId) return false;
         if (!(zone.lowerLocation.equals(lowerLocation))) return false;
         if (!(zone.upperLocation.equals(upperLocation))) return false;
         return true;
@@ -80,7 +80,7 @@ public class Zone implements ConfigurationSerializable {
     public @NotNull Map<String, Object> serialize() {
         Map<String, Object> data = new HashMap<>();
 
-        data.put("environment", environment);
+        data.put("environment", worldId);
         data.put("lower.x", lowerLocation.x);
         data.put("lower.y", lowerLocation.y);
         data.put("lower.z", lowerLocation.z);
@@ -94,7 +94,7 @@ public class Zone implements ConfigurationSerializable {
 
     public static Zone deserialize(Map<String, Object> args) {
         return new Zone(
-                (World.Environment) args.get("environment"),
+                (UUID) args.get("environment"),
                 new BlockCoordinate(
                         (int) args.get("lower.x"),
                         (int) args.get("lower.y"),

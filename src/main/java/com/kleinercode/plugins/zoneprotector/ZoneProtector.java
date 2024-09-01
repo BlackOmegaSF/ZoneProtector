@@ -1,9 +1,9 @@
 package com.kleinercode.plugins.zoneprotector;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
-import org.bukkit.World;
 import org.bukkit.command.*;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -158,12 +158,12 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                 return false;
             }
 
-            if (args.length < 8 && !args[0].equalsIgnoreCase(_LIST)) {
+            if (args.length < 7 && !args[0].equalsIgnoreCase(_LIST)) {
                 sender.sendMessage("Missing arguments!");
                 return false;
             }
 
-            if (args.length > 8) {
+            if (args.length > 7) {
                 sender.sendMessage("Too many arguments!");
                 return false;
             }
@@ -182,11 +182,14 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                 }
 
                 case _PROTECT, _UNPROTECT -> {
-                    World.Environment newEnv;
-                    try {
-                        newEnv = World.Environment.valueOf(args[1]);
-                    } catch (Exception e) {
-                        sender.sendMessage("Invalid dimension provided!");
+                    UUID worldId;
+                    if (sender instanceof BlockCommandSender) {
+                        worldId = ((BlockCommandSender) sender).getBlock().getWorld().getUID();
+                    } else if (sender instanceof Entity) {
+                        worldId = ((Entity) sender).getWorld().getUID();
+                    } else {
+                        // Sender isn't locatable, send error message
+                        sender.sendMessage("This command can only be run by locatable senders");
                         return true;
                     }
 
@@ -195,15 +198,15 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                     BlockCoordinate upperLocation;
                     try {
                         lowerLocation = new BlockCoordinate(
-                                parseIntCoordinate(args[2], sender, Enums.CoordinateType.X),
-                                parseIntCoordinate(args[3], sender, Enums.CoordinateType.Y),
-                                parseIntCoordinate(args[4], sender, Enums.CoordinateType.Z)
+                                parseIntCoordinate(args[1], sender, Enums.CoordinateType.X),
+                                parseIntCoordinate(args[2], sender, Enums.CoordinateType.Y),
+                                parseIntCoordinate(args[3], sender, Enums.CoordinateType.Z)
                         );
 
                         upperLocation = new BlockCoordinate(
-                                parseIntCoordinate(args[5], sender, Enums.CoordinateType.X),
-                                parseIntCoordinate(args[6], sender, Enums.CoordinateType.Y),
-                                parseIntCoordinate(args[7], sender, Enums.CoordinateType.Z)
+                                parseIntCoordinate(args[4], sender, Enums.CoordinateType.X),
+                                parseIntCoordinate(args[5], sender, Enums.CoordinateType.Y),
+                                parseIntCoordinate(args[6], sender, Enums.CoordinateType.Z)
                         );
                     } catch (NumberFormatException e) {
                         sender.sendMessage("Invalid integer coordinates!");
@@ -214,7 +217,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                     // Create the zone
                     Zone newZone;
                     try {
-                        newZone = new Zone(newEnv, lowerLocation, upperLocation);
+                        newZone = new Zone(worldId, lowerLocation, upperLocation);
                     } catch (IllegalArgumentException e) {
                         sender.sendMessage(e.getMessage());
                         return true;
@@ -292,23 +295,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
 
             if (args[0].equalsIgnoreCase(_LIST)) return tabCompleteValues;
             switch(position) {
-                case 1 -> {
-                    // Dimension
-                    if (args[position].isEmpty()) {
-                        for (World.Environment environment : World.Environment.values()) {
-                            tabCompleteValues.add(environment.name());
-                        }
-                    } else {
-                        Pattern pattern = Pattern.compile(args[position].toUpperCase());
-                        for (World.Environment environment : World.Environment.values()) {
-                            if (pattern.matcher(environment.name()).lookingAt()) {
-                                tabCompleteValues.add(environment.name());
-                            }
-                        }
-                    }
-                }
-
-                case 2, 5 -> {
+                case 1, 4 -> {
                     // X coordinate
                     if (sender instanceof Player) {
                         String xCoord = String.valueOf(((Player) sender).getLocation().getBlockX());
@@ -323,7 +310,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                     }
                 }
 
-                case 3, 6 -> {
+                case 2, 5 -> {
                     // Y coordinate
                     if (sender instanceof Player) {
                         String yCoord = String.valueOf(((Player) sender).getLocation().getBlockY());
@@ -338,7 +325,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
                     }
                 }
 
-                case 4, 7 -> {
+                case 3, 6 -> {
                     // Z coordinate
                     if (sender instanceof Player) {
                         String zCoord = String.valueOf(((Player) sender).getLocation().getBlockZ());

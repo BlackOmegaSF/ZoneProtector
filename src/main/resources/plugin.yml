@@ -5,4 +5,4 @@ api-version: '1.21'
 commands:
   zone:
     description: Protects defined zones
-    usage: Usage is /zone <list | protect | unprotect> [dimension] [x1] [y1] [z1] [x2] [y2] [z2]
+    usage: Usage is /zone <list | protect | unprotect> [x1] [y1] [z1] [x2] [y2] [z2]
