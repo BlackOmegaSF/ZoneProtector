@@ -80,7 +80,7 @@ public class Zone implements ConfigurationSerializable {
     public @NotNull Map<String, Object> serialize() {
         Map<String, Object> data = new HashMap<>();
 
-        data.put("environment", worldId);
+        data.put("worldId", worldId);
         data.put("lower.x", lowerLocation.x);
         data.put("lower.y", lowerLocation.y);
         data.put("lower.z", lowerLocation.z);
@@ -94,7 +94,7 @@ public class Zone implements ConfigurationSerializable {
 
     public static Zone deserialize(Map<String, Object> args) {
         return new Zone(
-                (UUID) args.get("environment"),
+                (UUID) args.get("worldId"),
                 new BlockCoordinate(
                         (int) args.get("lower.x"),
                         (int) args.get("lower.y"),
