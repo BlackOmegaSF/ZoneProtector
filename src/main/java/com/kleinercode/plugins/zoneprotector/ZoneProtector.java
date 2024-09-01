@@ -3,6 +3,7 @@ package com.kleinercode.plugins.zoneprotector;
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.*;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.*;
@@ -32,57 +33,6 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
     private static final String _LIST = "list";
 
     private final List<Zone> zones = new ArrayList<>();
-    private final List<EntityType> bannedTypes = List.of(
-            EntityType.BLAZE,
-            EntityType.BOGGED,
-            EntityType.BREEZE,
-            EntityType.CAVE_SPIDER,
-            EntityType.CREEPER,
-            EntityType.DRAGON_FIREBALL,
-            EntityType.ELDER_GUARDIAN,
-            EntityType.ENDER_DRAGON,
-            EntityType.ENDERMAN,
-            EntityType.ENDERMITE,
-            EntityType.EVOKER,
-            EntityType.EVOKER_FANGS,
-            EntityType.FIREBALL,
-            EntityType.GHAST,
-            EntityType.GIANT,
-            EntityType.GUARDIAN,
-            EntityType.HOGLIN,
-            EntityType.HUSK,
-            EntityType.ILLUSIONER,
-            EntityType.LLAMA_SPIT,
-            EntityType.MAGMA_CUBE,
-            EntityType.PHANTOM,
-            EntityType.PIGLIN,
-            EntityType.PIGLIN_BRUTE,
-            EntityType.PILLAGER,
-            EntityType.RAVAGER,
-            EntityType.SHULKER,
-            EntityType.SHULKER_BULLET,
-            EntityType.SILVERFISH,
-            EntityType.SKELETON,
-            EntityType.SKELETON_HORSE,
-            EntityType.SLIME,
-            EntityType.SMALL_FIREBALL,
-            EntityType.SPIDER,
-            EntityType.STRAY,
-            EntityType.TNT,
-            EntityType.TNT_MINECART,
-            EntityType.VEX,
-            EntityType.VINDICATOR,
-            EntityType.WARDEN,
-            EntityType.WITCH,
-            EntityType.WITHER,
-            EntityType.WITHER_SKELETON,
-            EntityType.WITHER_SKULL,
-            EntityType.ZOGLIN,
-            EntityType.ZOMBIE,
-            EntityType.ZOMBIE_HORSE,
-            EntityType.ZOMBIE_VILLAGER,
-            EntityType.ZOMBIFIED_PIGLIN
-    );
 
     @Override
     @SuppressWarnings("unchecked")
@@ -120,7 +70,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
     public void preCreatureSpawnEvent(PreCreatureSpawnEvent event) {
 
         // Check creature type
-        if (!(bannedTypes.contains(event.getType()))) {
+        if (!(Constants.bannedTypes.contains(event.getType()))) {
             // Spawn is allowed, continue
             return;
         }
@@ -139,7 +89,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
     public void creatureSpawnEvent(CreatureSpawnEvent event) {
 
         // Check creature type
-        if (!(bannedTypes.contains(event.getEntityType()))) {
+        if (!(Constants.bannedTypes.contains(event.getEntityType()))) {
             // Spawn is allowed, continue
             return;
         }
@@ -163,18 +113,13 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
         // Only do anything when it's a spawn egg being used
         ItemStack item = event.getItem();
         if (item == null) return;
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return;
-        if (meta instanceof SpawnEggMeta) {
-            EntitySnapshot snapshot = ((SpawnEggMeta) meta).getSpawnedEntity();
-            if (snapshot == null) return;
-            if (bannedTypes.contains(snapshot.getEntityType())) {
-                Location interactionPoint = event.getInteractionPoint();
-                if (interactionPoint == null) return;
-                for (Zone zone : zones) {
-                    if (zone.checkIfWithin(event.getInteractionPoint())) {
-                        event.getPlayer().sendMessage(Component.text("This area is protected! You cannot spawn monsters here."));
-                    }
+        Material material = item.getType();
+        if (Constants.bannedSpawnEggs.contains(material)) {
+            Location interactionPoint = event.getInteractionPoint();
+            if (interactionPoint == null) return;
+            for (Zone zone : zones) {
+                if (zone.checkIfWithin(event.getInteractionPoint())) {
+                    event.getPlayer().sendMessage(Component.text("This area is protected! You cannot spawn monsters here."));
                 }
             }
         }
