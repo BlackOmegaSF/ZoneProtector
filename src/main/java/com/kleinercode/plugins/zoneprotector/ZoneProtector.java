@@ -266,7 +266,7 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
         }
     }
 
-    public static class CommandZoneTabCompleter implements TabCompleter {
+    public class CommandZoneTabCompleter implements TabCompleter {
 
         @Override
         public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -294,53 +294,131 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
             }
 
             if (args[0].equalsIgnoreCase(_LIST)) return tabCompleteValues;
-            switch(position) {
-                case 1, 4 -> {
-                    // X coordinate
-                    if (sender instanceof Player) {
-                        String xCoord = String.valueOf(((Player) sender).getLocation().getBlockX());
-                        if (args[position].isEmpty()) {
-                            tabCompleteValues.add(xCoord);
-                        } else {
-                            Pattern pattern = Pattern.compile(args[position]);
-                            if (pattern.matcher(xCoord).lookingAt()) {
-                                tabCompleteValues.add(xCoord);
-                            }
+
+            if (args[0].equalsIgnoreCase(_PROTECT)) {
+                switch(position) {
+                    case 1, 4 -> {
+                        // X coordinate
+                        if (sender instanceof Player) {
+                            String xCoord = String.valueOf(((Player) sender).getLocation().getBlockX());
+                            if (matchValuePattern(args[position], xCoord)) tabCompleteValues.add(xCoord);
                         }
                     }
-                }
 
-                case 2, 5 -> {
-                    // Y coordinate
-                    if (sender instanceof Player) {
-                        String yCoord = String.valueOf(((Player) sender).getLocation().getBlockY());
-                        if (args[position].isEmpty()) {
-                            tabCompleteValues.add(yCoord);
-                        } else {
-                            Pattern pattern = Pattern.compile(args[position]);
-                            if (pattern.matcher(yCoord).lookingAt()) {
-                                tabCompleteValues.add(yCoord);
-                            }
+                    case 2, 5 -> {
+                        // Y coordinate
+                        if (sender instanceof Player) {
+                            String yCoord = String.valueOf(((Player) sender).getLocation().getBlockY());
+                            if (matchValuePattern(args[position], yCoord)) tabCompleteValues.add(yCoord);
                         }
                     }
-                }
 
-                case 3, 6 -> {
-                    // Z coordinate
-                    if (sender instanceof Player) {
-                        String zCoord = String.valueOf(((Player) sender).getLocation().getBlockZ());
-                        if (args[position].isEmpty()) {
-                            tabCompleteValues.add(zCoord);
-                        } else {
-                            Pattern pattern = Pattern.compile(args[position]);
-                            if (pattern.matcher(zCoord).lookingAt()) {
-                                tabCompleteValues.add(zCoord);
-                            }
+                    case 3, 6 -> {
+                        // Z coordinate
+                        if (sender instanceof Player) {
+                            String zCoord = String.valueOf(((Player) sender).getLocation().getBlockZ());
+                            if (matchValuePattern(args[position], zCoord)) tabCompleteValues.add(zCoord);
                         }
                     }
                 }
             }
+
+            if (args[0].equalsIgnoreCase(_UNPROTECT)) {
+                switch(position) {
+
+                    case 1 -> {
+                        // First x-coordinate
+                        for (Zone zone: zones) {
+                            String xCoord = String.valueOf(zone.lowerLocation.x);
+                            if (matchValuePattern(args[position], xCoord)) tabCompleteValues.add(xCoord);
+                        }
+                    }
+
+                    case 2 -> {
+                        // First y-coordinate
+                        for (Zone zone: zones) {
+                            try {
+                                if (Integer.parseInt(args[1]) == zone.lowerLocation.x) {
+                                    String yCoord = String.valueOf(zone.lowerLocation.y);
+                                    if (matchValuePattern(args[position], yCoord)) tabCompleteValues.add(yCoord);
+                                }
+                            } catch (NumberFormatException e) { /* Do nothing, something is invalid*/ }
+                        }
+                    }
+
+                    case 3 -> {
+                        // First z-coordinate
+                        for (Zone zone: zones) {
+                            try {
+                                if (Integer.parseInt(args[1]) == zone.lowerLocation.x && Integer.parseInt(args[2]) == zone.lowerLocation.y) {
+                                    String zCoord = String.valueOf(zone.lowerLocation.z);
+                                    if (matchValuePattern(args[position], zCoord)) tabCompleteValues.add(zCoord);
+                                }
+                            } catch (NumberFormatException e) { /* Do nothing, something is invalid*/ }
+                        }
+                    }
+
+                    case 4 -> {
+                        // Second x-coordinate
+                        for (Zone zone: zones) {
+                            try {
+                                if (Integer.parseInt(args[1]) == zone.lowerLocation.x
+                                        && Integer.parseInt(args[2]) == zone.lowerLocation.y
+                                        && Integer.parseInt(args[3]) == zone.lowerLocation.z
+                                ) {
+                                    String xCoord = String.valueOf(zone.upperLocation.x);
+                                    if (matchValuePattern(args[position], xCoord)) tabCompleteValues.add(xCoord);
+                                }
+                            } catch (NumberFormatException e) { /* Do nothing, something is invalid*/ }
+                        }
+                    }
+
+                    case 5 -> {
+                        // Second y-coordinate
+                        for (Zone zone: zones) {
+                            try {
+                                if (Integer.parseInt(args[1]) == zone.lowerLocation.x
+                                        && Integer.parseInt(args[2]) == zone.lowerLocation.y
+                                        && Integer.parseInt(args[3]) == zone.lowerLocation.z
+                                        && Integer.parseInt(args[4]) == zone.upperLocation.x
+                                ) {
+                                    String yCoord = String.valueOf(zone.upperLocation.y);
+                                    if (matchValuePattern(args[position], yCoord)) tabCompleteValues.add(yCoord);
+                                }
+                            } catch (NumberFormatException e) { /* Do nothing, something is invalid*/ }
+                        }
+                    }
+
+                    case 6 -> {
+                        // Second z-coordinate
+                        for (Zone zone: zones) {
+                            try {
+                                if (Integer.parseInt(args[1]) == zone.lowerLocation.x
+                                        && Integer.parseInt(args[2]) == zone.lowerLocation.y
+                                        && Integer.parseInt(args[3]) == zone.lowerLocation.z
+                                        && Integer.parseInt(args[4]) == zone.upperLocation.x
+                                        && Integer.parseInt(args[5]) == zone.upperLocation.y
+                                ) {
+                                    String zCoord = String.valueOf(zone.upperLocation.z);
+                                    if (matchValuePattern(args[position], zCoord)) tabCompleteValues.add(zCoord);
+                                }
+                            } catch (NumberFormatException e) { /* Do nothing, something is invalid*/ }
+                        }
+                    }
+
+                }
+            }
+
             return tabCompleteValues;
+        }
+
+        private Boolean matchValuePattern(String userInput, String match) {
+            if (userInput.isEmpty()) {
+                return true;
+            } else {
+                Pattern pattern = Pattern.compile(userInput);
+                return pattern.matcher(match).lookingAt();
+            }
         }
     }
 }
