@@ -5,10 +5,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.command.*;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -169,7 +166,9 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
         if (meta instanceof SpawnEggMeta) {
-            if (bannedTypes.contains(((SpawnEggMeta) meta).getCustomSpawnedType())) {
+            EntitySnapshot snapshot = ((SpawnEggMeta) meta).getSpawnedEntity();
+            if (snapshot == null) return;
+            if (bannedTypes.contains(snapshot.getEntityType())) {
                 Location interactionPoint = event.getInteractionPoint();
                 if (interactionPoint == null) return;
                 for (Zone zone : zones) {
