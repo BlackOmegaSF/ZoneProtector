@@ -12,7 +12,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityTeleportEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -141,6 +143,37 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void entityTeleportEvent(EntityTeleportEvent event) {
+        // Only check entities from banned list
+        if (Constants.bannedTypes.contains(event.getEntityType())) {
+            // Check if teleporting into protected zone
+            Location toLocation = event.getTo();
+            if (toLocation == null) return;
+            for (Zone zone : zones) {
+                if (zone.checkIfWithin(toLocation)) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void entityChangeBlockEvent(EntityChangeBlockEvent event) {
+        // Only check entities from banned list
+        if (Constants.bannedTypes.contains(event.getEntityType())) {
+            // Check if block is protected
+            for (Zone zone : zones) {
+                if (zone.checkIfWithin(event.getBlock().getLocation())) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
+    }
+
 
     public class CommandZone implements CommandExecutor {
 
