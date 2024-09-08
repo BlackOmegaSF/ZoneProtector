@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.*;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.*;
@@ -11,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -124,6 +126,22 @@ public final class ZoneProtector extends JavaPlugin implements Listener {
             }
         }
 
+    }
+
+    @EventHandler
+    public void entityExplodeEvent(EntityExplodeEvent event) {
+        // Only check entities from banned list
+        if (Constants.bannedTypes.contains(event.getEntityType())) {
+            // Check if any block destroyed is inside a protected zone
+            for (Zone zone : zones) {
+                for (Block block : event.blockList()) {
+                    if (zone.checkIfWithin(block.getLocation())) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     public class CommandZone implements CommandExecutor {
