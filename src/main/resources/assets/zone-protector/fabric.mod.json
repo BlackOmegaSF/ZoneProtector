@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "zone-protector",
+  "version": "${version}",
+  "name": "Zone Protector",
+  "description": "A server-side mod to protect specified zones",
+  "authors": [
+    "Kian Leiner"
+  ],
+  "environment": "server",
+  "entrypoints": {
+    "server": [
+      "com.kleinercode.fabric.ZoneProtector"
+    ]
+  },
+  "mixins": [],
+  "depends": {
+    "fabricloader": ">=0.16.2",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
