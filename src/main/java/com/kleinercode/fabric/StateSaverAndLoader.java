@@ -1,15 +1,11 @@
 package com.kleinercode.fabric;
 
-import net.minecraft.component.type.NbtComponent;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Position;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
@@ -32,7 +28,7 @@ public class StateSaverAndLoader extends PersistentState {
             zoneNbt.putInt("x2", zone.x2);
             zoneNbt.putInt("y2", zone.y2);
             zoneNbt.putInt("z2", zone.z2);
-            zoneNbt.putString("dimension", zone.dimension.toString());
+            zoneNbt.putString("dimension", zone.worldId.toString());
             zonesNbt.add(zoneNbt);
         });
         nbt.put("zones", zonesNbt);
