@@ -1,9 +1,7 @@
 package com.kleinercode.fabric;
 
 import net.fabricmc.api.DedicatedServerModInitializer;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.SpawnHelper;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +14,7 @@ public class ZoneProtector implements DedicatedServerModInitializer {
     @Override
     public void onInitializeServer() {
 
-
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ZoneCommand.register(dispatcher));
 
     }
 }

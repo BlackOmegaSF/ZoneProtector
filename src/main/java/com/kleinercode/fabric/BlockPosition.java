@@ -1,5 +1,8 @@
 package com.kleinercode.fabric;
 
+import com.jcraft.jorbis.Block;
+import net.minecraft.util.math.BlockPos;
+
 public class BlockPosition {
 
     int x;
@@ -23,6 +26,10 @@ public class BlockPosition {
         if (position.y != y) return false;
         if (position.z != z) return false;
         return true;
+    }
+
+    public static BlockPosition fromBlockPos(BlockPos pos) {
+        return new BlockPosition(pos.getX(), pos.getY(), pos.getZ());
     }
 
 }

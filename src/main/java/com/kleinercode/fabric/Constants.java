@@ -1,5 +1,6 @@
 package com.kleinercode.fabric;
 
+import jdk.jfr.Category;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -99,5 +100,16 @@ public class Constants {
             Items.ZOMBIE_HORSE_SPAWN_EGG,
             Items.ZOMBIE_VILLAGER_SPAWN_EGG
     );
+
+    public enum CommandMode {
+        LIST,
+        PROTECT,
+        UNPROTECT;
+
+        @Override
+        public String toString() {
+            return super.toString().toLowerCase();
+        }
+    }
 
 }

@@ -80,6 +80,7 @@ public class Zone {
     }
 
     public boolean equals(Zone zone) {
+        if (!(worldId.equals(zone.worldId))) return false;
         if (!(x1 == zone.x1)) return false;
         if (!(y1 == zone.y1)) return false;
         if (!(z1 == zone.z1)) return false;
