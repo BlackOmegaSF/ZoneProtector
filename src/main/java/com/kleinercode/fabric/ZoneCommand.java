@@ -13,7 +13,7 @@ public final class ZoneCommand {
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(literal("zone")
-                .requires(source -> source.hasPermissionLevel(1)) // Must be op level 1
+                .requires(source -> source.hasPermissionLevel(0)) // Must be op level 1
                 .then(literal(Constants.CommandMode.LIST.toString())
                         .executes(context -> {
                             StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(context.getSource().getServer());
@@ -31,7 +31,7 @@ public final class ZoneCommand {
                             return 1;
                         }))
                 .then(literal(Constants.CommandMode.PROTECT.toString())
-                        .then(argument("pos1", BlockPosArgumentType.blockPos())))
+                        .then(argument("pos1", BlockPosArgumentType.blockPos())
                         .then(argument("pos2", BlockPosArgumentType.blockPos())
                                 .executes(context -> {
 
@@ -55,9 +55,9 @@ public final class ZoneCommand {
                                     serverState.zones.add(newZone);
                                     context.getSource().sendFeedback(() -> Text.literal("Began protecting zone " + newZone.prettyPrint()), true);
                                     return 1;
-                                }))
+                                }))))
                 .then(literal(Constants.CommandMode.UNPROTECT.toString())
-                        .then(argument("pos1", BlockPosArgumentType.blockPos()))
+                        .then(argument("pos1", BlockPosArgumentType.blockPos())
                         .then(argument("pos2", BlockPosArgumentType.blockPos())
                             .executes(context -> {
 
@@ -80,7 +80,7 @@ public final class ZoneCommand {
                                     return -1;
                                 }
 
-                            })))
+                            }))))
         );
     }
 
