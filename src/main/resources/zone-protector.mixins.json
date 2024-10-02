@@ -6,7 +6,8 @@
   "mixins": [],
   "client": [],
   "server": [
-    "CheckNaturalSpawnsMixin"
+    "CheckNaturalSpawnsMixin",
+    "CheckEndermanTeleportMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -2,6 +2,7 @@ package com.kleinercode.fabric;
 
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.entity.mob.EndermanEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
