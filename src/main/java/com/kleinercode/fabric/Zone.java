@@ -79,7 +79,10 @@ public class Zone {
         return worldId.toTranslationKey() + " [" + x1 + ", " + y1 + ", " + z1 + "] to [" + x2 + ", " + y2 + ", " + z2 + "]";
     }
 
-    public boolean equals(Zone zone) {
+    @Override
+    public boolean equals(Object object) {
+        if (object == null) return false;
+        if (!(object instanceof Zone zone)) return false;
         if (!(worldId.equals(zone.worldId))) return false;
         if (!(x1 == zone.x1)) return false;
         if (!(y1 == zone.y1)) return false;

@@ -72,13 +72,15 @@ public final class ZoneCommand {
                                 Zone newZone = new Zone(world.getRegistryKey().getValue(), position1, position2);
 
                                 StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(context.getSource().getServer());
-                                if (serverState.zones.remove(newZone)) {
-                                    context.getSource().sendFeedback(() -> Text.literal("Stopped protecting zone " + newZone.prettyPrint()), true);
-                                    return 1;
-                                } else {
-                                    context.getSource().sendFeedback(() -> Text.literal("That zone isn't under protection!"), false);
-                                    return -1;
+                                for (Zone zone : serverState.zones) {
+                                    if (zone.equals(newZone)) {
+                                        serverState.zones.remove(zone);
+                                        context.getSource().sendFeedback(() -> Text.literal("Stopped protecting zone " + newZone.prettyPrint()), true);
+                                        return 1;
+                                    }
                                 }
+                                context.getSource().sendFeedback(() -> Text.literal("That zone isn't under protection!"), false);
+                                return -1;
 
                             }))))
         );
