@@ -29,7 +29,7 @@ public class CheckNaturalSpawnsMixin {
             for (Zone zone : serverState.zones) {
                 if (zone.containsPosition(world.getRegistryKey().getValue(), pos)) {
                     // Natural spawn needs to be cancelled
-                    ZoneProtector.LOGGER.info("Cancelling spawn within zone {}", zone.prettyPrint());
+                    ZoneProtector.LOGGER.debug("Cancelling spawn within zone {}", zone.prettyPrint());
                     cir.setReturnValue(false);
                     return;
                 }
