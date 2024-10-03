@@ -7,7 +7,10 @@
   "client": [],
   "server": [
     "CheckNaturalSpawnsMixin",
-    "CheckEndermanTeleportMixin"
+    "CheckEndermanTeleportMixin",
+    "CheckShulkerTeleportMixin",
+    "ExplosionProtectionMixin",
+    "ExplosionAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
