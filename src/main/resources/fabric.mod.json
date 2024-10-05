@@ -10,16 +10,15 @@
   "environment": "server",
   "entrypoints": {
     "server": [
-      "com.kleinercode.fabric.ZoneProtector"
+      "com.kleinercode.fabric.zoneprotector.ZoneProtector"
     ]
   },
   "mixins": [
     "zone-protector.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.16.2",
-    "minecraft": "~1.21.1",
-    "java": ">=21",
-    "fabric-api": "*"
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
   }
 }

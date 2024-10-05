@@ -1,4 +1,4 @@
-package com.kleinercode.fabric;
+package com.kleinercode.fabric.zoneprotector;
 
 import jdk.jfr.Category;
 import net.minecraft.entity.EntityType;

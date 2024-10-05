@@ -1,11 +1,9 @@
-package com.kleinercode.fabric.mixin;
+package com.kleinercode.fabric.zoneprotector.mixin;
 
 import com.google.common.collect.Sets;
-import com.kleinercode.fabric.StateSaverAndLoader;
-import com.kleinercode.fabric.Zone;
-import com.kleinercode.fabric.ZoneProtector;
+import com.kleinercode.fabric.zoneprotector.StateSaverAndLoader;
+import com.kleinercode.fabric.zoneprotector.Zone;
 import com.llamalad7.mixinextras.sugar.Local;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

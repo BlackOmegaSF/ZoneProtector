@@ -1,4 +1,4 @@
-package com.kleinercode.fabric;
+package com.kleinercode.fabric.zoneprotector;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.command.argument.BlockPosArgumentType;

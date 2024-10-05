@@ -1,10 +1,8 @@
-package com.kleinercode.fabric;
+package com.kleinercode.fabric.zoneprotector;
 
-import com.mojang.datafixers.kinds.Const;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;

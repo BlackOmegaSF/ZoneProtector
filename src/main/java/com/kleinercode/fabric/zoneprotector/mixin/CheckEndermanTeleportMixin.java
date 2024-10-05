@@ -1,15 +1,12 @@
-package com.kleinercode.fabric.mixin;
+package com.kleinercode.fabric.zoneprotector.mixin;
 
-import com.kleinercode.fabric.StateSaverAndLoader;
-import com.kleinercode.fabric.Zone;
-import com.kleinercode.fabric.ZoneProtector;
+import com.kleinercode.fabric.zoneprotector.StateSaverAndLoader;
+import com.kleinercode.fabric.zoneprotector.Zone;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;

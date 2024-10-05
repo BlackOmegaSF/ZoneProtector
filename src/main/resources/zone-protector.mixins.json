@@ -6,11 +6,11 @@
   "mixins": [],
   "client": [],
   "server": [
-    "CheckNaturalSpawnsMixin",
-    "CheckEndermanTeleportMixin",
-    "CheckShulkerTeleportMixin",
-    "ExplosionProtectionMixin",
-    "ExplosionAccessor"
+    "com.kleinercode.fabric.zoneprotector.mixin.CheckNaturalSpawnsMixin",
+    "com.kleinercode.fabric.zoneprotector.mixin.CheckEndermanTeleportMixin",
+    "com.kleinercode.fabric.zoneprotector.mixin.CheckShulkerTeleportMixin",
+    "com.kleinercode.fabric.zoneprotector.mixin.ExplosionProtectionMixin",
+    "com.kleinercode.fabric.zoneprotector.mixin.ExplosionAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,4 +1,4 @@
-package com.kleinercode.fabric.mixin;
+package com.kleinercode.fabric.zoneprotector.mixin;
 
 import com.jcraft.jorbis.Block;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;

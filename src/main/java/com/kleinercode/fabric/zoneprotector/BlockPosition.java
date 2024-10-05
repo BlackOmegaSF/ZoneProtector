@@ -1,6 +1,5 @@
-package com.kleinercode.fabric;
+package com.kleinercode.fabric.zoneprotector;
 
-import com.jcraft.jorbis.Block;
 import net.minecraft.util.math.BlockPos;
 
 public class BlockPosition {

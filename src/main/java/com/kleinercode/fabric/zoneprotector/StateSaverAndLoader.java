@@ -1,4 +1,4 @@
-package com.kleinercode.fabric;
+package com.kleinercode.fabric.zoneprotector;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;

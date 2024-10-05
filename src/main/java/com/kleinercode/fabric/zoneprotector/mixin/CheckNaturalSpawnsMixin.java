@@ -1,9 +1,9 @@
-package com.kleinercode.fabric.mixin;
+package com.kleinercode.fabric.zoneprotector.mixin;
 
-import com.kleinercode.fabric.Constants;
-import com.kleinercode.fabric.StateSaverAndLoader;
-import com.kleinercode.fabric.Zone;
-import com.kleinercode.fabric.ZoneProtector;
+import com.kleinercode.fabric.zoneprotector.Constants;
+import com.kleinercode.fabric.zoneprotector.StateSaverAndLoader;
+import com.kleinercode.fabric.zoneprotector.Zone;
+import com.kleinercode.fabric.zoneprotector.ZoneProtector;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;

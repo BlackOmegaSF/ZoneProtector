@@ -1,10 +1,9 @@
-package com.kleinercode.fabric;
+package com.kleinercode.fabric.zoneprotector;
 
 
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Position;
 
 public class Zone {
 
