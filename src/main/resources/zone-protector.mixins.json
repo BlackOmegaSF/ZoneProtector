@@ -1,16 +1,16 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.kleinercode.fabric.mixin",
+  "package": "com.kleinercode.fabric.zoneprotector.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [],
   "client": [],
   "server": [
-    "com.kleinercode.fabric.zoneprotector.mixin.CheckNaturalSpawnsMixin",
-    "com.kleinercode.fabric.zoneprotector.mixin.CheckEndermanTeleportMixin",
-    "com.kleinercode.fabric.zoneprotector.mixin.CheckShulkerTeleportMixin",
-    "com.kleinercode.fabric.zoneprotector.mixin.ExplosionProtectionMixin",
-    "com.kleinercode.fabric.zoneprotector.mixin.ExplosionAccessor"
+    "CheckNaturalSpawnsMixin",
+    "CheckEndermanTeleportMixin",
+    "CheckShulkerTeleportMixin",
+    "ExplosionProtectionMixin",
+    "ExplosionAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
