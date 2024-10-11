@@ -29,12 +29,8 @@ public class ZoneProtector implements DedicatedServerModInitializer {
 
             ItemStack itemStack;
             switch (hand) {
-                case Hand.MAIN_HAND -> {
-                    itemStack = player.getMainHandStack();
-                }
-                case Hand.OFF_HAND -> {
-                    itemStack = player.getOffHandStack();
-                }
+                case Hand.MAIN_HAND -> itemStack = player.getMainHandStack();
+                case Hand.OFF_HAND -> itemStack = player.getOffHandStack();
                 default -> {
                     // Weird stuff is happening, just get out of this
                     return ActionResult.PASS;
