@@ -4,9 +4,9 @@ import net.minecraft.util.math.BlockPos;
 
 public class BlockPosition {
 
-    int x;
-    int y;
-    int z;
+    final int x;
+    final int y;
+    final int z;
 
     public BlockPosition(int x, int y, int z) {
         this.x = x;

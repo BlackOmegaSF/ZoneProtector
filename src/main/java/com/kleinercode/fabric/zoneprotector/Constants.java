@@ -1,6 +1,5 @@
 package com.kleinercode.fabric.zoneprotector;
 
-import jdk.jfr.Category;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;

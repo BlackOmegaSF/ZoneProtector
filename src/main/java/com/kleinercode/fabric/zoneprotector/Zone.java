@@ -7,13 +7,13 @@ import net.minecraft.util.math.BlockPos;
 
 public class Zone {
 
-    Identifier worldId;
-    int x1; // Lower x
-    int y1; // Lower y
-    int z1; // Lower z
-    int x2; // Upper x
-    int y2; // Upper y
-    int z2; // Upper z
+    final Identifier worldId;
+    final int x1; // Lower x
+    final int y1; // Lower y
+    final int z1; // Lower z
+    final int x2; // Upper x
+    final int y2; // Upper y
+    final int z2; // Upper z
 
     public Zone(Identifier worldIdentifier, BlockPosition position1, BlockPosition position2) {
         worldId = worldIdentifier;
@@ -56,17 +56,17 @@ public class Zone {
         }
 
         // Check x
-        if (position.getX() < x1 || (int) position.getX() > x2) {
+        if (position.getX() < x1 || position.getX() > x2) {
             return false;
         }
 
         // Check z
-        if (position.getZ() < z1 || (int) position.getZ() > z2) {
+        if (position.getZ() < z1 || position.getZ() > z2) {
             return false;
         }
 
         // Check y
-        if (position.getY() < y1 || (int) position.getY() > y2) {
+        if (position.getY() < y1 || position.getY() > y2) {
             return false;
         }
 

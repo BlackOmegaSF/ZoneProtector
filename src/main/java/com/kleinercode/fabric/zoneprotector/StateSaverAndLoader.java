@@ -15,7 +15,7 @@ import java.util.List;
 
 public class StateSaverAndLoader extends PersistentState {
 
-    public List<Zone> zones = new ArrayList<>();
+    public final List<Zone> zones = new ArrayList<>();
 
     @Override
     public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
