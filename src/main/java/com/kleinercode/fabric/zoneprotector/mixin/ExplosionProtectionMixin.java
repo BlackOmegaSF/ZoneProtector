@@ -4,26 +4,27 @@ import com.google.common.collect.Sets;
 import com.kleinercode.fabric.zoneprotector.StateSaverAndLoader;
 import com.kleinercode.fabric.zoneprotector.Zone;
 import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
+import net.minecraft.world.explosion.ExplosionImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.List;
 import java.util.Set;
 
-@Mixin(Explosion.class)
+@Mixin(ExplosionImpl.class)
 public abstract class ExplosionProtectionMixin {
 
     // Prevent explosions from damaging protected areas
 
-    @Inject(method = "collectBlocksAndDamageEntities", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/ObjectArrayList;addAll(Ljava/util/Collection;)Z", remap = false))
-    private void onExplosionCheck(CallbackInfo info, @Local Set<BlockPos> set) {
+    @Inject(method = "getBlocksToDestroy", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/ObjectArrayList;<init>(Ljava/util/Collection;)V", remap = false))
+    private void onExplosionGetBlocksToDestroy(CallbackInfoReturnable<List<BlockPos>> cir, @Local Set<BlockPos> set) {
 
-        World world = ((ExplosionAccessor)this).getWorld();
+        ServerWorld world = ((ExplosionAccessor)this).getWorld();
         StateSaverAndLoader state = StateSaverAndLoader.getServerState(world.getServer());
         Identifier worldId = world.getRegistryKey().getValue();
         Set<BlockPos> toRemove = Sets.newHashSet();
