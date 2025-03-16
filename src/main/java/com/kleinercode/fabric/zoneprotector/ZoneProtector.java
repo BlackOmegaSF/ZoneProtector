@@ -46,7 +46,7 @@ public class ZoneProtector implements DedicatedServerModInitializer {
                 for (Zone zone : state.zones) {
                     if (zone.containsPosition(world.getRegistryKey().getValue(), spawnPos)) {
                         // Monster is being spawned in zone
-                        player.sendMessage(Text.literal("This area is protected! You cannot spawn monsters here."));
+                        player.sendMessage(Text.literal("This area is protected! You cannot spawn monsters here."), false);
                         return ActionResult.FAIL;
                     }
                 }
