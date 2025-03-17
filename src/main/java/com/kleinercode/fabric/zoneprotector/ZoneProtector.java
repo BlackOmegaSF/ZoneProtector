@@ -17,6 +17,12 @@ public class ZoneProtector implements DedicatedServerModInitializer {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+    // TODO Add protections for:
+    //  Fire destruction
+    //  Fire spread
+    //  Endermen griefing
+    //  Herbivores eating grass
+
     @Override
     public void onInitializeServer() {
 
