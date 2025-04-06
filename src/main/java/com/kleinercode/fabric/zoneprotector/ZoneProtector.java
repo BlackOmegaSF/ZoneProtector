@@ -47,9 +47,9 @@ public class ZoneProtector implements DedicatedServerModInitializer {
 
             if (Constants.bannedSpawnEggs.contains(itemStack.getItem())) {
                 // Item is a banned spawn egg
-                StateSaverAndLoader state = StateSaverAndLoader.getServerState(world.getServer());
+                ZonePersistentState state = ZonePersistentState.getServerState(world.getServer());
                 BlockPos spawnPos = hitResult.getBlockPos().offset(hitResult.getSide());
-                for (Zone zone : state.zones) {
+                for (Zone zone : state.getZones()) {
                     if (zone.containsPosition(world.getRegistryKey().getValue(), spawnPos)) {
                         // Monster is being spawned in zone
                         player.sendMessage(Text.literal("This area is protected! You cannot spawn monsters here."), false);

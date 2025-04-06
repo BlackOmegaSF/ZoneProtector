@@ -1,6 +1,6 @@
 package com.kleinercode.fabric.zoneprotector.mixin;
 
-import com.kleinercode.fabric.zoneprotector.StateSaverAndLoader;
+import com.kleinercode.fabric.zoneprotector.ZonePersistentState;
 import com.kleinercode.fabric.zoneprotector.Zone;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.entity.mob.EndermanEntity;
@@ -19,10 +19,10 @@ public abstract class CheckEndermanTeleportMixin {
     @Inject(method = "teleportTo(DDD)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", ordinal = 1), cancellable = true)
     private void onEndermanTeleportCheck(double x, double y, double z, CallbackInfoReturnable<Boolean> cir, @Local BlockPos.Mutable mutable) {
 
-        StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(((EndermanEntity)(Object)this).getServer());
+        ZonePersistentState serverState = ZonePersistentState.getServerState(((EndermanEntity)(Object)this).getServer());
         Identifier worldId = ((EndermanEntity)(Object)this).getWorld().getRegistryKey().getValue();
         //BlockPos position = new BlockPos((int) x, (int) y, (int) z);
-        for (Zone zone : serverState.zones) {
+        for (Zone zone : serverState.getZones()) {
             if (zone.containsPosition(worldId, mutable)) {
                 // Teleport needs to be cancelled
                 //ZoneProtector.LOGGER.debug("Cancelling enderman teleport within zone {}", zone.prettyPrint());

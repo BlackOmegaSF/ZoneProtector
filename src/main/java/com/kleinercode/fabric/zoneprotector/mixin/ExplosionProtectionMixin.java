@@ -1,7 +1,7 @@
 package com.kleinercode.fabric.zoneprotector.mixin;
 
 import com.google.common.collect.Sets;
-import com.kleinercode.fabric.zoneprotector.StateSaverAndLoader;
+import com.kleinercode.fabric.zoneprotector.ZonePersistentState;
 import com.kleinercode.fabric.zoneprotector.Zone;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.server.world.ServerWorld;
@@ -25,11 +25,11 @@ public abstract class ExplosionProtectionMixin {
     private void onExplosionGetBlocksToDestroy(CallbackInfoReturnable<List<BlockPos>> cir, @Local Set<BlockPos> set) {
 
         ServerWorld world = ((ExplosionAccessor)this).getWorld();
-        StateSaverAndLoader state = StateSaverAndLoader.getServerState(world.getServer());
+        ZonePersistentState state = ZonePersistentState.getServerState(world.getServer());
         Identifier worldId = world.getRegistryKey().getValue();
         Set<BlockPos> toRemove = Sets.newHashSet();
         for (BlockPos pos : set) {
-            for (Zone zone : state.zones) {
+            for (Zone zone : state.getZones()) {
                 if (zone.containsPosition(worldId, pos)) {
                     toRemove.add(pos);
                 }

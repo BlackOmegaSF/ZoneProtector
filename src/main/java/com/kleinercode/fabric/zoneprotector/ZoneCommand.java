@@ -16,15 +16,15 @@ public final class ZoneCommand {
                 .requires(source -> source.hasPermissionLevel(0)) // Must be op level 1
                 .then(literal(Constants.CommandMode.LIST.toString())
                         .executes(context -> {
-                            StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(context.getSource().getServer());
-                            if (serverState.zones.isEmpty()) {
+                            ZonePersistentState serverState = ZonePersistentState.getServerState(context.getSource().getServer());
+                            if (serverState.getZones().isEmpty()) {
                                 context.getSource().sendFeedback(() -> Text.literal("No zones are under protection."), false);
                                 return 1;
                             }
 
                             StringBuilder builder = new StringBuilder();
-                            builder.append("Protecting ").append(serverState.zones.size()).append(" zones:\n");
-                            for (Zone zone : serverState.zones) {
+                            builder.append("Protecting ").append(serverState.getZones().size()).append(" zones:\n");
+                            for (Zone zone : serverState.getZones()) {
                                 builder.append(zone.prettyPrint()).append("\n");
                             }
                             context.getSource().sendFeedback(() -> Text.literal(builder.toString()), false);
@@ -45,14 +45,14 @@ public final class ZoneCommand {
 
                                     Zone newZone = new Zone(world.getRegistryKey().getValue(), position1, position2);
 
-                                    StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(context.getSource().getServer());
-                                    if (serverState.zones.contains(newZone)) {
+                                    ZonePersistentState serverState = ZonePersistentState.getServerState(context.getSource().getServer());
+                                    if (serverState.getZones().contains(newZone)) {
                                         context.getSource().sendFeedback(() -> Text.literal("That zone is already under protection!"), false);
                                         return -1;
                                     }
 
                                     // Now add the zone
-                                    serverState.zones.add(newZone);
+                                    serverState.getZones().add(newZone);
                                     context.getSource().sendFeedback(() -> Text.literal("Began protecting zone " + newZone.prettyPrint()), true);
                                     return 1;
                                 }))))
@@ -71,10 +71,10 @@ public final class ZoneCommand {
 
                                 Zone newZone = new Zone(world.getRegistryKey().getValue(), position1, position2);
 
-                                StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(context.getSource().getServer());
-                                for (Zone zone : serverState.zones) {
+                                ZonePersistentState serverState = ZonePersistentState.getServerState(context.getSource().getServer());
+                                for (Zone zone : serverState.getZones()) {
                                     if (zone.equals(newZone)) {
-                                        serverState.zones.remove(zone);
+                                        serverState.getZones().remove(zone);
                                         context.getSource().sendFeedback(() -> Text.literal("Stopped protecting zone " + newZone.prettyPrint()), true);
                                         return 1;
                                     }

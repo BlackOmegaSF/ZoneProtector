@@ -1,6 +1,6 @@
 package com.kleinercode.fabric.zoneprotector.mixin;
 
-import com.kleinercode.fabric.zoneprotector.StateSaverAndLoader;
+import com.kleinercode.fabric.zoneprotector.ZonePersistentState;
 import com.kleinercode.fabric.zoneprotector.Zone;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.entity.mob.ShulkerEntity;
@@ -19,9 +19,9 @@ public abstract class CheckShulkerTeleportMixin {
     @Inject(method = "tryTeleport", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/ShulkerEntity;findAttachSide(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/Direction;"), cancellable = true)
     private void onShulkerTeleportCheck(CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 1) BlockPos blockPos2) {
 
-        StateSaverAndLoader state = StateSaverAndLoader.getServerState(((ShulkerEntity)(Object)this).getServer());
+        ZonePersistentState state = ZonePersistentState.getServerState(((ShulkerEntity)(Object)this).getServer());
         Identifier worldId = ((ShulkerEntity)(Object)this).getWorld().getRegistryKey().getValue();
-        for (Zone zone : state.zones) {
+        for (Zone zone : state.getZones()) {
             if (zone.containsPosition(worldId, blockPos2)) {
                 // Teleport needs to be cancelled
                 cir.setReturnValue(false);
