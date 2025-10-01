@@ -19,8 +19,8 @@ public abstract class CheckShulkerTeleportMixin {
     @Inject(method = "tryTeleport", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/ShulkerEntity;findAttachSide(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/Direction;"), cancellable = true)
     private void onShulkerTeleportCheck(CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 1) BlockPos blockPos2) {
 
-        ZonePersistentState state = ZonePersistentState.getServerState(((ShulkerEntity)(Object)this).getServer());
-        Identifier worldId = ((ShulkerEntity)(Object)this).getWorld().getRegistryKey().getValue();
+        ZonePersistentState state = ZonePersistentState.getServerState(((ShulkerEntity)(Object)this).getEntityWorld().getServer());
+        Identifier worldId = ((ShulkerEntity)(Object)this).getEntityWorld().getRegistryKey().getValue();
         for (Zone zone : state.getZones()) {
             if (zone.containsPosition(worldId, blockPos2)) {
                 // Teleport needs to be cancelled

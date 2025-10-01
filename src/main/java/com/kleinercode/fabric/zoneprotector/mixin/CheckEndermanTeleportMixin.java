@@ -19,8 +19,8 @@ public abstract class CheckEndermanTeleportMixin {
     @Inject(method = "teleportTo(DDD)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", ordinal = 1), cancellable = true)
     private void onEndermanTeleportCheck(double x, double y, double z, CallbackInfoReturnable<Boolean> cir, @Local BlockPos.Mutable mutable) {
 
-        ZonePersistentState serverState = ZonePersistentState.getServerState(((EndermanEntity)(Object)this).getServer());
-        Identifier worldId = ((EndermanEntity)(Object)this).getWorld().getRegistryKey().getValue();
+        ZonePersistentState serverState = ZonePersistentState.getServerState(((EndermanEntity)(Object)this).getEntityWorld().getServer());
+        Identifier worldId = ((EndermanEntity)(Object)this).getEntityWorld().getRegistryKey().getValue();
         //BlockPos position = new BlockPos((int) x, (int) y, (int) z);
         for (Zone zone : serverState.getZones()) {
             if (zone.containsPosition(worldId, mutable)) {
