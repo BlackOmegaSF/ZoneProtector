@@ -1,27 +1,26 @@
 package com.kleinercode.fabric.zoneprotector;
 
-import net.minecraft.datafixer.DataFixTypes;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.PersistentState;
-import net.minecraft.world.PersistentStateManager;
-import net.minecraft.world.PersistentStateType;
-import net.minecraft.world.World;
-
+import net.minecraft.util.datafix.DataFixTypes;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
+import net.minecraft.world.level.storage.DimensionDataStorage;
 import java.util.*;
 
-public class ZonePersistentState extends PersistentState {
+public class ZonePersistentState extends SavedData {
 
     private static final String PERSISTENT_STATE_KEY = "zones";
 
-    public static final PersistentStateType<ZonePersistentState> STATE_TYPE = new PersistentStateType<>(
+    public static final SavedDataType<ZonePersistentState> STATE_TYPE = new SavedDataType<>(
             PERSISTENT_STATE_KEY,
             () -> new ZonePersistentState(new ArrayList<>()),
-            NbtCompound.CODEC.xmap(
+            CompoundTag.CODEC.xmap(
                     ZonePersistentState::readNbt,
-                    state -> state.writeNbt(new NbtCompound())
+                    state -> state.writeNbt(new CompoundTag())
             ),
             DataFixTypes.LEVEL
     );
@@ -42,10 +41,10 @@ public class ZonePersistentState extends PersistentState {
         return zones;
     }
 
-    public NbtCompound writeNbt(NbtCompound nbt) {
-        NbtList zonesNbt = new NbtList();
+    public CompoundTag writeNbt(CompoundTag nbt) {
+        ListTag zonesNbt = new ListTag();
         zones.forEach((zone) -> {
-            NbtCompound zoneNbt = new NbtCompound();
+            CompoundTag zoneNbt = new CompoundTag();
             zoneNbt.putInt("x1", zone.x1);
             zoneNbt.putInt("y1", zone.y1);
             zoneNbt.putInt("z1", zone.z1);
@@ -60,15 +59,15 @@ public class ZonePersistentState extends PersistentState {
         return nbt;
     }
 
-    public static ZonePersistentState readNbt(NbtCompound tag) {
+    public static ZonePersistentState readNbt(CompoundTag tag) {
         ZonePersistentState state = new ZonePersistentState(new ArrayList<>());
         try {
-            NbtList zonesList = tag.getList("zones").orElseThrow();
+            ListTag zonesList = tag.getList("zones").orElseThrow();
             zonesList.forEach((item) -> {
                 try {
-                    NbtCompound zoneNbt = (NbtCompound) item;
+                    CompoundTag zoneNbt = (CompoundTag) item;
                     Zone zone = new Zone(
-                            Identifier.of(zoneNbt.getString("dimension").orElseThrow()),
+                            Identifier.parse(zoneNbt.getString("dimension").orElseThrow()),
                             new BlockPosition(
                                     zoneNbt.getInt("x1").orElseThrow(),
                                     zoneNbt.getInt("y1").orElseThrow(),
@@ -94,11 +93,11 @@ public class ZonePersistentState extends PersistentState {
     }
 
     public static ZonePersistentState getServerState(MinecraftServer server) {
-        PersistentStateManager persistentStateManager = Objects.requireNonNull(server.getWorld(World.OVERWORLD)).getPersistentStateManager();
+        DimensionDataStorage persistentStateManager = Objects.requireNonNull(server.getLevel(Level.OVERWORLD)).getDataStorage();
 
-        ZonePersistentState state = persistentStateManager.getOrCreate(STATE_TYPE);
+        ZonePersistentState state = persistentStateManager.computeIfAbsent(STATE_TYPE);
 
-        state.markDirty();
+        state.setDirty();
 
         return state;
     }

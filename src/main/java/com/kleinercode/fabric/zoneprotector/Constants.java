@@ -1,10 +1,9 @@
 package com.kleinercode.fabric.zoneprotector;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-
 import java.util.List;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 
 public class Constants {
 
@@ -16,6 +15,7 @@ public class Constants {
             EntityType.CREAKING,
             EntityType.CREEPER,
             EntityType.DRAGON_FIREBALL,
+            EntityType.DROWNED,
             EntityType.ELDER_GUARDIAN,
             EntityType.ENDER_DRAGON,
             EntityType.ENDERMAN,
@@ -31,6 +31,7 @@ public class Constants {
             EntityType.ILLUSIONER,
             EntityType.LLAMA_SPIT,
             EntityType.MAGMA_CUBE,
+            EntityType.PARCHED,
             EntityType.PHANTOM,
             EntityType.PIGLIN,
             EntityType.PIGLIN_BRUTE,
@@ -68,6 +69,7 @@ public class Constants {
             Items.CAVE_SPIDER_SPAWN_EGG,
             Items.CREAKING_SPAWN_EGG,
             Items.CREEPER_SPAWN_EGG,
+            Items.DROWNED_SPAWN_EGG,
             Items.ELDER_GUARDIAN_SPAWN_EGG,
             Items.ENDER_DRAGON_SPAWN_EGG,
             Items.ENDERMAN_SPAWN_EGG,
@@ -78,6 +80,7 @@ public class Constants {
             Items.HOGLIN_SPAWN_EGG,
             Items.HUSK_SPAWN_EGG,
             Items.MAGMA_CUBE_SPAWN_EGG,
+            Items.PARCHED_SPAWN_EGG,
             Items.PHANTOM_SPAWN_EGG,
             Items.PIGLIN_SPAWN_EGG,
             Items.PIGLIN_BRUTE_SPAWN_EGG,
@@ -99,7 +102,8 @@ public class Constants {
             Items.ZOGLIN_SPAWN_EGG,
             Items.ZOMBIE_SPAWN_EGG,
             Items.ZOMBIE_HORSE_SPAWN_EGG,
-            Items.ZOMBIE_VILLAGER_SPAWN_EGG
+            Items.ZOMBIE_VILLAGER_SPAWN_EGG,
+            Items.ZOMBIFIED_PIGLIN_SPAWN_EGG
     );
 
     public enum CommandMode {

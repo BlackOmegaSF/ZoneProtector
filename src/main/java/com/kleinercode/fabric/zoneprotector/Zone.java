@@ -2,8 +2,8 @@ package com.kleinercode.fabric.zoneprotector;
 
 
 
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 
 public class Zone {
 
@@ -75,7 +75,7 @@ public class Zone {
     }
 
     public String prettyPrint() {
-        return worldId.toTranslationKey() + " [" + x1 + ", " + y1 + ", " + z1 + "] to [" + x2 + ", " + y2 + ", " + z2 + "]";
+        return worldId.toLanguageKey() + " [" + x1 + ", " + y1 + ", " + z1 + "] to [" + x2 + ", " + y2 + ", " + z2 + "]";
     }
 
     @Override
