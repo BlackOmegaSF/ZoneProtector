@@ -18,8 +18,8 @@ public class ZonePersistentState extends PersistentState {
 
     public static final PersistentStateType<ZonePersistentState> STATE_TYPE = new PersistentStateType<>(
             PERSISTENT_STATE_KEY,
-            (ctx) -> new ZonePersistentState(new ArrayList<>()),
-            (ctx) -> NbtCompound.CODEC.xmap(
+            () -> new ZonePersistentState(new ArrayList<>()),
+            NbtCompound.CODEC.xmap(
                     ZonePersistentState::readNbt,
                     state -> state.writeNbt(new NbtCompound())
             ),

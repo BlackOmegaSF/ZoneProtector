@@ -2,6 +2,7 @@ package com.kleinercode.fabric.zoneprotector;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.command.argument.BlockPosArgumentType;
+import net.minecraft.command.permission.*;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -13,7 +14,7 @@ public final class ZoneCommand {
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(literal("zone")
-                .requires(source -> source.hasPermissionLevel(0)) // Must be op level 1
+                .requires(source -> source.getPermissions().hasPermission(new Permission.Level(PermissionLevel.MODERATORS))) // Must be op level 1
                 .then(literal(Constants.CommandMode.LIST.toString())
                         .executes(context -> {
                             ZonePersistentState serverState = ZonePersistentState.getServerState(context.getSource().getServer());
