@@ -14,8 +14,9 @@ public class Zone {
     final int x2; // Upper x
     final int y2; // Upper y
     final int z2; // Upper z
+    final String zoneName;
 
-    public Zone(Identifier worldIdentifier, BlockPosition position1, BlockPosition position2) {
+    public Zone(Identifier worldIdentifier, BlockPosition position1, BlockPosition position2, String name) {
         worldId = worldIdentifier;
         int p1x = position1.x;
         int p1y = position1.y;
@@ -47,6 +48,8 @@ public class Zone {
             z1 = p1z;
             z2 = p2z;
         }
+
+        zoneName = name;
     }
 
     public boolean containsPosition(Identifier worldIdentifier, BlockPos position) {
@@ -75,7 +78,7 @@ public class Zone {
     }
 
     public String prettyPrint() {
-        return worldId.toLanguageKey() + " [" + x1 + ", " + y1 + ", " + z1 + "] to [" + x2 + ", " + y2 + ", " + z2 + "]";
+        return zoneName + ": " + worldId.toLanguageKey() + " [" + x1 + ", " + y1 + ", " + z1 + "] to [" + x2 + ", " + y2 + ", " + z2 + "]";
     }
 
     @Override
@@ -89,7 +92,7 @@ public class Zone {
         if (!(x2 == zone.x2)) return false;
         if (!(y2 == zone.y2)) return false;
         if (!(z2 == zone.z2)) return false;
-        // They're the same
+        // They're the same (note: doesn't consider name)
         return true;
     }
 

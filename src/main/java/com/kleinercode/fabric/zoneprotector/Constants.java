@@ -7,6 +7,10 @@ import net.minecraft.world.item.Items;
 
 public class Constants {
 
+    public static final String nbtZones = "zones";
+    public static final String nbtZoneName = "zoneName";
+    public static final String nbtDimension = "dimension";
+
     public static final List<EntityType<?>> bannedTypes = List.of(
             EntityType.BLAZE,
             EntityType.BOGGED,

@@ -23,6 +23,10 @@ public class ZoneProtector implements DedicatedServerModInitializer {
     //  Endermen griefing
     //  Herbivores eating grass
 
+    // TODO Add names for protected zones
+
+    // TODO Find ways to make zone searching more efficient
+
     @Override
     public void onInitializeServer() {
 

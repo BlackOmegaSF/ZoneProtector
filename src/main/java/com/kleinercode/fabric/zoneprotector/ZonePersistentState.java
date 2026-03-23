@@ -51,10 +51,11 @@ public class ZonePersistentState extends SavedData {
             zoneNbt.putInt("x2", zone.x2);
             zoneNbt.putInt("y2", zone.y2);
             zoneNbt.putInt("z2", zone.z2);
-            zoneNbt.putString("dimension", zone.worldId.toString());
+            zoneNbt.putString(Constants.nbtDimension, zone.worldId.toString());
+            zoneNbt.putString(Constants.nbtZoneName, zone.zoneName);
             zonesNbt.add(zoneNbt);
         });
-        nbt.put("zones", zonesNbt);
+        nbt.put(Constants.nbtZones, zonesNbt);
 
         return nbt;
     }
@@ -62,12 +63,12 @@ public class ZonePersistentState extends SavedData {
     public static ZonePersistentState readNbt(CompoundTag tag) {
         ZonePersistentState state = new ZonePersistentState(new ArrayList<>());
         try {
-            ListTag zonesList = tag.getList("zones").orElseThrow();
+            ListTag zonesList = tag.getList(Constants.nbtZones).orElseThrow();
             zonesList.forEach((item) -> {
                 try {
                     CompoundTag zoneNbt = (CompoundTag) item;
                     Zone zone = new Zone(
-                            Identifier.parse(zoneNbt.getString("dimension").orElseThrow()),
+                            Identifier.parse(zoneNbt.getString(Constants.nbtDimension).orElseThrow()),
                             new BlockPosition(
                                     zoneNbt.getInt("x1").orElseThrow(),
                                     zoneNbt.getInt("y1").orElseThrow(),
@@ -77,7 +78,8 @@ public class ZonePersistentState extends SavedData {
                                     zoneNbt.getInt("x2").orElseThrow(),
                                     zoneNbt.getInt("y2").orElseThrow(),
                                     zoneNbt.getInt("z2").orElseThrow()
-                            )
+                            ),
+                            zoneNbt.getStringOr(Constants.nbtZoneName, "Unnamed Zone")
                     );
                     state.zones.add(zone);
                 } catch (NoSuchElementException e) {
