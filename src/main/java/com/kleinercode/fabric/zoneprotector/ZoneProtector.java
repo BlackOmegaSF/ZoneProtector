@@ -43,7 +43,7 @@ public class ZoneProtector implements DedicatedServerModInitializer {
                 }
             }
 
-            if (itemStack == null) return InteractionResult.PASS;
+            if (itemStack.isEmpty()) return InteractionResult.PASS;
 
             if (Constants.bannedSpawnEggs.contains(itemStack.getItem())) {
                 // Item is a banned spawn egg
