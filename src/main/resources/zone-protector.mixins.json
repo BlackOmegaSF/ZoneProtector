@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.kleinercode.fabric.zoneprotector.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_25",
   "mixins": [],
   "client": [],
   "server": [
@@ -10,7 +10,8 @@
     "CheckEndermanTeleportMixin",
     "CheckShulkerTeleportMixin",
     "ExplosionProtectionMixin",
-    "ExplosionAccessor"
+    "ExplosionAccessor",
+    "DataFixersMixin"
   ],
   "injectors": {
     "defaultRequire": 1

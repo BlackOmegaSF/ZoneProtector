@@ -8,16 +8,17 @@ import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
-import net.minecraft.world.level.storage.DimensionDataStorage;
+import net.minecraft.world.level.storage.SavedDataStorage;
+
 import java.util.*;
 
 public class ZonePersistentState extends SavedData {
 
-    private static final String PERSISTENT_STATE_KEY = "zones";
+    private static final Identifier PERSISTENT_STATE_KEY = Identifier.fromNamespaceAndPath("zoneprotector", "zones");
 
     public static final SavedDataType<ZonePersistentState> STATE_TYPE = new SavedDataType<>(
             PERSISTENT_STATE_KEY,
-            () -> new ZonePersistentState(new ArrayList<>()),
+            ZonePersistentState::new,
             CompoundTag.CODEC.xmap(
                     ZonePersistentState::readNbt,
                     state -> state.writeNbt(new CompoundTag())
@@ -28,6 +29,11 @@ public class ZonePersistentState extends SavedData {
     private final List<Zone> zones;
 
     public ZonePersistentState(List<Zone> zones) {
+        super();
+        this.zones = new ArrayList<>(zones);
+    }
+
+    public ZonePersistentState() {
         super();
         this.zones = new ArrayList<>();
     }
@@ -61,7 +67,7 @@ public class ZonePersistentState extends SavedData {
     }
 
     public static ZonePersistentState readNbt(CompoundTag tag) {
-        ZonePersistentState state = new ZonePersistentState(new ArrayList<>());
+        ZonePersistentState state = new ZonePersistentState();
         try {
             ListTag zonesList = tag.getList(Constants.nbtZones).orElseThrow();
             zonesList.forEach((item) -> {
@@ -95,7 +101,7 @@ public class ZonePersistentState extends SavedData {
     }
 
     public static ZonePersistentState getServerState(MinecraftServer server) {
-        DimensionDataStorage persistentStateManager = Objects.requireNonNull(server.getLevel(Level.OVERWORLD)).getDataStorage();
+        SavedDataStorage persistentStateManager = server.getDataStorage();
 
         ZonePersistentState state = persistentStateManager.computeIfAbsent(STATE_TYPE);
 
