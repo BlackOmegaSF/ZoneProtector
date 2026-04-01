@@ -17,4 +17,4 @@ Inside a protected zone:
 - Players cannot use spawn eggs
 - Endermen and shulkers cannot teleport in
 - Hostile mobs cannot spawn
-- TNT cannot destroy blocks
+- Explosions cannot destroy blocks
